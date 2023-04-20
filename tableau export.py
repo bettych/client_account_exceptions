@@ -52,8 +52,15 @@ df['New in DB'] = np.where(df['New Owner ID']=="#N/A", "#N/A",
 # Column: Added?
 df['Added?'] = np.where(df['Household']=="", "Yes", "No")
 
+# Column: GenX Owner Name
+# Add GenX info by Account Number
+genXsys = pd.read_csv('working files/genxsys.csv', na_filter=False)
+genXsys = genXsys.drop_duplicates(subset=['genx_name'])
+df = pd.merge(df, genXsys['genx_name'], 
+                left_on="Account Number", 
+                right_on=[genXsys["ACCOUNT_NUMBER"]], 
+                how='left')
 
-# TODO: add genx info
 # TODO: get last report's status and comments
 # TODO: sort
 
