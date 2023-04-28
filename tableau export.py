@@ -61,8 +61,22 @@ df = pd.merge(df, genXsys['genx_name'],
                 right_on=[genXsys["ACCOUNT_NUMBER"]], 
                 how='left')
 
-# TODO: get last report's status and comments
-# TODO: sort
+# Column: Status
+#         Comments
+# Get last report's status and comments
+last_week = pd.read_csv('working files/last week.csv', 
+                        na_filter=False,
+                        encoding = "ISO-8859-1",
+                        usecols=['Account Number',
+                                 'Status',
+                                 'Comments'])
+last_week = last_week.drop_duplicates(subset=['Account Number'])
+df = pd.merge(left=df, right=last_week, how='left')
+
+# Sort by Household
+df.loc[df['Household']=="", "Household"] = "zzzzz"
+df = df.sort_values(by=['Household'])
+df.loc[df['Household']=="zzzzz", "Household"] = ""
 
 # Export dataframe to csv file
 df.to_csv("current week - updated.csv", index=False)
