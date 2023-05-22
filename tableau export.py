@@ -80,3 +80,5 @@ df.loc[df['Household']=="zzzzz", "Household"] = ""
 
 # Export dataframe to csv file
 df.to_csv("current week - updated.csv", index=False)
+
+df.close()
